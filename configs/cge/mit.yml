@@ -7,6 +7,7 @@ dataset:
   splitname: compositional-split-natural
 model_params:
   model: graphfull
+  partial: false
   dropout: true
   norm: true
   nlayers: 2 

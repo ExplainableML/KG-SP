@@ -42,7 +42,7 @@ On UT-Zappos, the command is:
 
 **Partial Label Setting** To train KG-SP (in the partial label setting) on MIT-States, run:
 ```
-    python train.py --config configs/kgsp/partial/mit.yml --open_world --fast
+    python train.py --config configs/kgsp/partial/mit.yml --partial --fast
 ```
 
 **Note:** To create a new config, all the available arguments are indicated in `flags.py`. 
@@ -55,9 +55,9 @@ On UT-Zappos, the command is:
     python test.py --logpath LOG_DIR --open_world --fast
 ```
 
-To test a KG-SP model in the open world setting with partial setting, the same command can be used:
+To test a KG-SP model on the partial label setting, a similar command can be used:
 ```
-    python test.py --logpath LOG_DIR --fast --open_world 
+    python test.py --logpath LOG_DIR --fast --partial
 ```
 
 

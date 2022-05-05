@@ -8,6 +8,7 @@ dataset:
   open_world: true
 model_params:
   model: compcos
+  partial: false
   dropout: true
   norm: true
   nlayers: 2

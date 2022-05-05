@@ -7,7 +7,7 @@ dataset:
   splitname: compositional-split-natural
 model_params:
   model: graphfull
-  entropy: true
+  partial: false
   pseudo: false
   dropout: true
   norm: true

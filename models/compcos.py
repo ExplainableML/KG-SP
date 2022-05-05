@@ -21,14 +21,6 @@ def compute_cosine_similarity(names, weights, return_dict=True):
         return dict_sim
     return pairing_names, similarity.to('cpu')
 
-class HLoss(nn.Module):
-    def __init__(self):
-        super(HLoss, self).__init__()
-
-    def forward(self, x):
-        b = F.softmax(x, dim=1) * F.log_softmax(x, dim=1)
-        return -1.0*b.mean()
-
 
 class CompCos(nn.Module):
 
@@ -212,7 +204,6 @@ class CompCos(nn.Module):
         attr_embed = self.attr_embedder(self.uniq_attrs).permute(1,0)
         obj_pred = F.softmax(torch.matmul(img_feats,obj_embed),dim=1)
         attr_pred = F.softmax(torch.matmul(img_feats,attr_embed),dim=1)
-        #print(obj_pred.size(),attr_pred.size())
         score = torch.matmul(img_feats_normed, pair_embeds)
         #score = torch.bmm(attr_pred.unsqueeze(2), obj_pred.unsqueeze(1)).view(attr_pred.shape[0],-1)
 
@@ -222,17 +213,6 @@ class CompCos(nn.Module):
             idx = obj_id + attr_id * len(self.dset.objs)
             scores[(attr, obj)] = score[:, idx]
         return score, scores
-
-    def pseudo_forward(self,x):
-        img = x[0]
-        img_feats = self.image_embedder(img)
-        img_feats_normed = F.normalize(img_feats, dim=1)
-        pair_embeds = self.compose(self.val_attrs, self.val_objs).permute(1, 0)  # Evaluate all pairs
-        pair_pred = F.softmax(self.scale*pair_pred,dim=-1)
-        reshaped_pred = pair_pred.view(-1,len(self.dset.attrs),len(self.dset.objs))
-        obj_pred = reshaped_pred.sum(-2)
-        attr_pred = reshaped_pred.sum(-1)
-        return obj_pred.detach(),attr_pred.detach()
 
     def val_forward_with_threshold(self, x, th=0.):
         img = x[0]
@@ -271,21 +251,6 @@ class CompCos(nn.Module):
             obj_loss = nl(torch.log(obj_pred[mask==1,:]), objs[mask==1])
             loss = obj_loss + attr_loss
 
-        if self.args.entropy == True and self.args.partial==True:
-            hl = HLoss()
-            obj_ent = hl(obj_pred)
-            attr_ent = hl(attr_pred)
-            ent_loss = obj_ent + attr_ent
-
-        if self.args.pseudo == True and self.args.partial==True:
-            ssl_thresh = 0.95
-            pseudo_obj,psuedo_attr=self.pseudo_forward(x)
-            obj_mask = psuedo_obj.max(dim=1)[0]>ssl_thresh
-            attr_mask = psuedo_attr.max(dim=1)[0]>ssl_thresh
-            u_obj = F.cross_entropy(obj_pred[obj_mask*mask],psuedo_obj.argmax(dim=1)[obj_mask*mask])
-            u_attr = F.cross_entropy(attr_pred[attr_mask*(1-mask)],psuedo_attr.argmax(dim=1)[attr_mask*(1-mask)])
-            u_loss = u_obj+u_attr
-
         if self.args.partial == False:
             if self.activated:
                pair_pred += (1 - self.seen_mask) * self.feasibility_margin
@@ -296,11 +261,6 @@ class CompCos(nn.Module):
 
             loss = F.cross_entropy(self.scale*pair_pred,pairs)
 
-
-        if self.args.entropy == True and self.args.partial == True:
-            loss = loss + ent_loss
-        if self.args.pseudo == True and self.args.partial == True:
-            loss = loss+u_loss
         return loss, None
 
 
