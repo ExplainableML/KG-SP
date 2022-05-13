@@ -55,7 +55,7 @@ On UT-Zappos, the command is:
     python test.py --logpath LOG_DIR --open_world --fast
 ```
 
-To test a KG-SP model on the partial label setting, a similar command can be used:
+**Partial Label Setting** To test a KG-SP model on the partial label setting, a similar command can be used:
 ```
     python test.py --logpath LOG_DIR --fast --partial
 ```
