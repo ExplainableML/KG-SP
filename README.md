@@ -1,7 +1,7 @@
 
 # Knowledge Guided Simple Primitives
 This is the  PyTorch code our CVPR 2022 work [KG-SP: Knowledge Guided Simple Primitives
-for Open World Compositional Zero-Shot Learning](https://arxiv.org/pdf/2101.12609.pdf) .  The code provides the implementation of our proposed method KG-SP, along with the baselines of CompCos and CGE  taken from [here](https://github.com/ExplainableML/czsl). Additionally, we also provide the splits for our pCZSL setting on 3 datasets (UT-Zappos, MIT-States and C-GQA). 
+for Open World Compositional Zero-Shot Learning](https://arxiv.org/pdf/2205.06784.pdf) .  The code provides the implementation of our proposed method KG-SP, along with the baselines of CompCos and CGE  taken from [here](https://github.com/ExplainableML/czsl). Additionally, we also provide the splits for our pCZSL setting on 3 datasets (UT-Zappos, MIT-States and C-GQA). 
 
 <p align="center">
   <img src="utils/method.png" />
