@@ -161,13 +161,13 @@ class CompositionDataset(Dataset):
             self.train_obj_affordance[_obj] = list(set(candidates))
 
         if 'ut' in self.root:
-            fo=open('utils/partial_utzappos_split.pkl')
+            fo=open('utils/partial_utzappos_split.pkl','rb')
             sample_mask = pickle.load(fo)
         elif 'mit' in self.root:
-            fo=open('utils/partial_mitstates_split.pkl')
+            fo=open('utils/partial_mitstates_split.pkl','rb')
             sample_mask = pickle.load(fo)
         elif 'cgqa' in self.root:
-            fo = open('utils/partial_cgqa_split.pkl')
+            fo = open('utils/partial_cgqa_split.pkl','rb')
             sample_mask = pickle.load(fo)
 
         self.sample_mask = sample_mask
